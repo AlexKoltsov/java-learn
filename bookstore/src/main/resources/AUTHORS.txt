@@ -1,0 +1,3 @@
+Alexander	Pushkin	Russia	26.05.1799
+Oscar	Wilde	Ireland	16.10.1854
+Charles	Dickens	England	7.2.1812

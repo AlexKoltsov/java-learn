@@ -1,0 +1,6 @@
+The Tale Of Tsar Saltan	1832	56	Alexander	Pushkin
+The Stationmaster	1831	32	Alexander	Pushkin
+The Picture of Dorian Gray	1890	320	Oscar	Wilde
+De Profundis	1905	224	Oscar	Wilde
+The Adventures of Oliver Twist	1837	288	Charles	Dickens
+The Personal History, Adventures, Experience and Observation of David Copperfield the Younger of Blunderstone Rookery	1850	928	Charles	Dickens
