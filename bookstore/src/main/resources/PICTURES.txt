@@ -1,2 +1,2 @@
-Hero	1920	Realism	Victor	Vasnetsov
-Alyonushka	1881	Romanticism	Victor	Vasnetsov
+Hero	1920	Realism	Victor	Vasnetsov	100
+Alyonushka	1881	Romanticism	Victor	Vasnetsov	200

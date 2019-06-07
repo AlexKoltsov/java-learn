@@ -1,7 +1,10 @@
 package com.example.java_learn.bookstore.person;
 
 import com.example.java_learn.bookstore.item.Artwork;
+import com.example.java_learn.bookstore.util.Helper;
 
+import java.text.ParseException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -34,5 +37,16 @@ public class Painter extends Person {
 
     public void setArtWorks(ArrayList<Artwork> artWorks) {
         this.artWorks = artWorks;
+    }
+
+    public static Painter createPainterFromString(String painterStr) throws ParseException, DateTimeParseException {
+        String[] fields = painterStr.split("\t");
+
+        if (fields.length != 5) {
+            throw new ParseException("Должно быть 5 полей для инициализации художника. В строке было найлено только " + fields.length +
+                    ". Переданная строка: " + painterStr, fields.length);
+        }
+
+        return new Painter(fields[0], fields[1], fields[2], Helper.strToDate(fields[3]), fields[4]);
     }
 }

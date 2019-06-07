@@ -5,19 +5,26 @@ import com.example.java_learn.bookstore.item.Book;
 import com.example.java_learn.bookstore.item.ItemForSale;
 import com.example.java_learn.bookstore.person.Author;
 import com.example.java_learn.bookstore.person.Painter;
+import com.example.java_learn.bookstore.util.Helper;
+import com.sun.corba.se.impl.interceptors.PICurrent;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.example.java_learn.bookstore.util.Helper.strToDate;
+
+// TODO: set authors and painters for books and artworks during file reading
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws IOException {
+        String defaultResPath = Main.class.getResource("/").getPath();
 
-        List<ItemForSale> books = createBooks();
-        List<ItemForSale> pictures = createPictures();
+        List<Book> books = createBooks(defaultResPath);
+        List<Artwork> pictures = createPictures(defaultResPath);
         List<ItemForSale> allItems = Stream.concat(books.stream(), pictures.stream())
                 .collect(Collectors.toList());
 
@@ -25,7 +32,6 @@ public class Main {
         shop.showItems();
 
         List<Author> authors = books.stream()
-                .map(item -> (Book) item)
                 .map(Book::getAuthor)
                 .distinct()
                 .collect(Collectors.toList());
@@ -55,64 +61,22 @@ public class Main {
     /**
      * Create authors -> create books -> add books ro authors
      *
+     * @param defaultResPath
      * @return ArrayList of Book
-     * @throws ParseException
      */
-    private static List<ItemForSale> createBooks() throws ParseException {
-        Book book;
-        List<ItemForSale> books = new ArrayList<>();
-
-        Author alexanderPushkin = new Author("Alexander", "Pushkin", "Russia", strToDate("26.05.1799"));
-        Author oscarWilde = new Author("Oscar", "Wilde", "Ireland", strToDate("16.10.1854"));
-        Author charlesDickens = new Author("Charles ", "Dickens", "England", strToDate("7.2.1812"));
-
-        books.add(book = new Book("The Tale Of Tsar Saltan", 1832, 100, alexanderPushkin, 56));
-        alexanderPushkin.getBooks().add(book);
-
-        books.add(book = new Book("The Stationmaster", 1831, 150, alexanderPushkin, 32));
-        alexanderPushkin.getBooks().add(book);
-
-
-        books.add(book = new Book("The Picture of Dorian Gray", 1890, 250, oscarWilde, 320));
-        oscarWilde.getBooks().add(book);
-
-        books.add(book = new Book("De Profundis", 1905, 300, oscarWilde, 224));
-        oscarWilde.getBooks().add(book);
-
-
-        books.add(book = new Book("The Adventures of Oliver Twist", 1837, 185, charlesDickens, 288));
-        charlesDickens.getBooks().add(book);
-
-        books.add(book = new Book("The Personal History, Adventures, Experience and Observation of David " +
-                "Copperfield the Younger of Blunderstone Rookery", 1850, 379, charlesDickens, 928));
-        charlesDickens.getBooks().add(book);
-
-
-        return books;
+    private static List<Book> createBooks(String defaultResPath) throws IOException {
+        List<Author> authors = Helper.loadFromFile(defaultResPath + "AUTHORS.txt", Author::createAuthorFromString);
+        return Helper.loadFromFile(defaultResPath + "BOOKS.txt", Book::createBookFromString);
     }
 
     /**
      * Create painters -> create pictures -> add pictures to painters
      *
+     * @param defaultResPath
      * @return ArrayList of pictures
-     * @throws ParseException
      */
-    private static List<ItemForSale> createPictures() throws ParseException {
-        Artwork picture;
-        List<ItemForSale> pictures = new ArrayList<>();
-
-        Painter victorVasnetsov = new Painter("Victor", "Vasnetsov", "Russia", strToDate("15.05.1848"), "realism");
-
-        pictures.add(picture = new Artwork("Hero", 1920, 650, victorVasnetsov, "Realism"));
-        victorVasnetsov.getArtWorks().add(picture);
-
-        pictures.add(picture = new Artwork("Alyonushka", 1881, 489, victorVasnetsov, "Romanticism"));
-        victorVasnetsov.getArtWorks().add(picture);
-
-        return pictures;
-    }
-
-    private static Date strToDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(date);
+    private static List<Artwork> createPictures(String defaultResPath) throws IOException {
+        List<Painter> painters = Helper.loadFromFile(defaultResPath + "PAINTERS.txt", Painter::createPainterFromString);
+        return Helper.loadFromFile(defaultResPath + "PICTURES.txt", Artwork::createPictureFromString);
     }
 }
