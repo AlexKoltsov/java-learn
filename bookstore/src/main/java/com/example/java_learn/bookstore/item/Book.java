@@ -1,8 +1,10 @@
 package com.example.java_learn.bookstore.item;
 
+import com.example.java_learn.bookstore.exception.UnknownCreatorException;
 import com.example.java_learn.bookstore.person.Author;
 
 import java.text.ParseException;
+import java.util.List;
 
 public class Book extends ItemForSale {
 
@@ -13,10 +15,6 @@ public class Book extends ItemForSale {
         super(name, creationYear, price);
         this.author = author;
         this.numberPages = numberPages;
-    }
-
-    public Book(String name, int creationYear, int price, int numberPages) {
-        this(name, creationYear, price, null, numberPages);
     }
 
     public Author getAuthor() {
@@ -41,7 +39,7 @@ public class Book extends ItemForSale {
                 author.getSecondName() + " in " + creationYear + " year, " + numberPages + " pages";
     }
 
-    public static Book createBookFromString(String bookStr) throws ParseException {
+    public static Book createBookFromString(String bookStr, List<Author> authors) throws ParseException, UnknownCreatorException {
         String[] fields = bookStr.split("\t");
 
         if (fields.length != 6) {
@@ -49,7 +47,15 @@ public class Book extends ItemForSale {
                     ". Переданная строка: " + bookStr, fields.length);
         }
 
-        return new Book(fields[0], Integer.valueOf(fields[1]), Integer.valueOf(fields[5]), Integer.valueOf(fields[2]));
+        Author author = authors.stream()
+                .filter(a -> a.getFirstName().equals(fields[3]))
+                .filter(a -> a.getSecondName().equals(fields[4]))
+                .findFirst()
+                .orElseThrow(() -> new UnknownCreatorException("Author " + fields[3] + " " + fields[4] + " not found"));
+
+        Book book = new Book(fields[0], Integer.valueOf(fields[1]), Integer.valueOf(fields[5]), author, Integer.valueOf(fields[2]));
+        author.addBook(book);
+        return book;
     }
 
 }

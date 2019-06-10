@@ -49,4 +49,8 @@ public class Painter extends Person {
 
         return new Painter(fields[0], fields[1], fields[2], Helper.strToDate(fields[3]), fields[4]);
     }
+
+    public void addArtwork(Artwork artwork) {
+        artWorks.add(artwork);
+    }
 }

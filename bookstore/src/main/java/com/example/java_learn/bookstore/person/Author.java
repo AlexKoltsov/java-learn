@@ -23,6 +23,10 @@ public class Author extends Person {
         this(firstName, secondName, country, birthday, new ArrayList<>());
     }
 
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
     public ArrayList<Book> getBooks() {
         return books;
     }
