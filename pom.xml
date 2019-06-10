@@ -16,6 +16,7 @@
     <modules>
         <module>basic</module>
         <module>bookstore</module>
+        <module>bookstore-desktop</module>
     </modules>
 
 </project>
